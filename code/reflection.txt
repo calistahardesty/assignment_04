@@ -1,6 +1,12 @@
 Write your reflection here.
 
-See reflection.md for what makes a good reflection — be specific, use the
-terminology from this assignment (lineage, grain, element function, Series.apply,
-row apply / axis=1, left merge, NaN, coerce, copy-add-return, boolean index,
-export), and make it actionable.
+In this assignment I built an ETL pipeline in pandas that turns a messy timesheet and an employee roster into a payroll table. The most important idea was data lineage where every pipeline step follows the copy-add-return shape, so it adds a new column instead of overwriting the raw one. That way "38h 30m" stays in the table next to 38.5, and anyone can check where a number came from.
+
+I wrote element functions like parse_hours and clean_currency that take one messy value and return one number. They coerce unreadable values like "forty" or "N/A" to 0.0, so one bad cell doesn't stop payroll for everyone. I used Series.apply to run them down a whole column, and row apply with axis=1 when a calculation needed two values from the same row, like hours and rate for gross pay.
+
+The two files had different grains. The roster has one row per person, and the timesheet has one row per person who worked that week. I used a left merge with the timesheet on the left so every timesheet row survives, even an unknown ID like E099, which gets NaN for its rate and is labeled "unmatched." An inner merge would have dropped that person because it did not know them. In the app, I used a boolean index to count 
+overtime and unmatched rows, and built the export as a new DataFrame instead of renaming the pipeline's columns.
+
+The part I struggled with most was running the app the right way, indentation errors, and understanding why the merge type matters. Something that is still confusing to me is when to use apply vs. axis=1, or how .copy() works. Next time I want to practice like writing the pipeline steps myself from the before checking with help.
+
+
