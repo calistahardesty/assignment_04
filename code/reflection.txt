@@ -7,6 +7,5 @@ I wrote element functions like parse_hours and clean_currency that take one mess
 The two files had different grains. The roster has one row per person, and the timesheet has one row per person who worked that week. I used a left merge with the timesheet on the left so every timesheet row survives, even an unknown ID like E099, which gets NaN for its rate and is labeled "unmatched." An inner merge would have dropped that person because it did not know them. In the app, I used a boolean index to count 
 overtime and unmatched rows, and built the export as a new DataFrame instead of renaming the pipeline's columns.
 
-The part I struggled with most was running the app the right way, indentation errors, and understanding why the merge type matters. Something that is still confusing to me is when to use apply vs. axis=1, or how .copy() works. Next time I want to practice like writing the pipeline steps myself from the before checking with help.
-
-
+The part I struggled with most was running the app the right way, indentation errors, and understanding why the merge type matters. Something that is still confusing to me is when to use Series.apply vs. apply with axis=1, and how .copy() protects the frame the caller passed in. Before Assignment 05, I will rewrite add_hours_worked and add_gross_pay from scratch using only their docstrings, without looking
+ at my old code or asking for help, so I can practice the difference between the two kinds of apply. I will check my work by running pytest after each function, and I will commit after each step.
